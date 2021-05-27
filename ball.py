@@ -1,64 +1,66 @@
 import pygame
-import random
+from random import randint
 
-WHITE = 255, 255, 255
-tamanho = 300, 300
-tela=pygame.display.set_mode(tamanho)
-tela_retangulo=tela.get_rect()
+BG = 40, 42, 54
+GREEN = 80, 250, 123
 
-class Bola:
-    def __init__(self, tamanho):
-        self.altura, self.largura = tamanho
-        self.imagem = pygame.Surface(tamanho)
-        self.imagem.fill(WHITE)
-        self.imagem_retangulo = self.imagem.get_rect()
-        self.velocidade = 10
-        self.set_bola()
 
-    def aleatorio(self):
-        while True:
-            num = random.uniform(-1.0, 1.0)
-            if num > -0.5 and num < 0.5:
-                continue
-            else:
-                return num
+class Ball():
+    # This class represents a paddle. It derives from the "Sprite" class in Pygame.
 
-    def set_bola(self):
-        x=self.aleatorio()
-        y=self.aleatorio()
-        self.imagem_retangulo.x = tela_retangulo.centerx
-        self.imagem_retangulo.y = tela_retangulo.centery
-        self.velo=[x, y]
-        self.pos = list(tela_retangulo.center)
+    def __init__(self, x,y,color, width, height):
 
-    def colide_parede(self):
-        if self.imagem_retangulo.y < 0 or self.imagem_retangulo.y > tela_retangulo.bottom - self.altura:
-            self.velo[1] *= -1
+        # Pass in the color of the car, and its x and y position, width and height.
+        # Set the background color and set it to be transparent
+        self.x = x
+        self.y = y
+        self.type = 'b'
+        self.color = color
+        self.image = pygame.Surface([width, height])
+        self.image.fill(color)
+        self.image.set_colorkey(color)
 
-        if self.imagem_retangulo.x < 0 or self.imagem_retangulo.x > tela_retangulo.right - self.largura:
-            self.velo[0] *= -1
-            if self.imagem_retangulo.x < 0:
-                print("Bateu na parede")
+        self.velocity = [randint(4, 8), randint(-8, 8)]
 
-    def colide_raquete(self, raquete_rect):
-        if self.imagem_retangulo.colliderect(raquete_rect):
-            self.velo[0] *= -1
-            print("Defendeu")
+        # Fetch the rectangle object that has the dimensions of the image.
+        self.rect = self.image.get_rect()
 
+    def draw(self, win):
+        pygame.draw.rect(win, self.color, self.rect)
 
     def move(self):
-        self.pos[0] += self.velo[0] * self.velocidade
-        self.pos[1] += self.velo[1] * self.velocidade
-        self.imagem_retangulo.center = self
 
-    def atualiza(self, raquete_rect):
-        self.colide_parede()
-        self.colide_raquete(raquete_rect)
-        self.move()
+        self.x += self.velocity[0]
+        self.y += self.velocity[1]
 
-    def realiza(self):
-        tela.blit(self.imagem, self.imagem_retangulo)
+        if self.x >= 290:
+            self.velocity[0] = -self.velocity[0]
+            self.x += self.velocity[0]
+        if self.x <= 0:
+            self.velocity[0] = -self.velocity[0]
+            self.x += self.velocity[0]
+        if self.y >= 290:
+            self.velocity[1] = -self.velocity[1]
+            self.y += self.velocity[1]
+        if self.y <= 0:
+            self.velocity[1] = -self.velocity[1]
+            self.y += self.velocity[1]
 
-#bola = Bola((15,15))
+        self.update()
+
+    def update(self):
+        self.rect = (self.x, self.y, 10, 10)
+
+    def check_collision(self, p_rect):
+        if self.image.get_rect().colliderect(p_rect.image.get_rect()):
+            print("bateu")
+
+    def bounce(self):
+        self.velocity[0] = -self.velocity[0]
+        self.velocity[1] = randint(-8, 8)
+
+
+
+
 
 

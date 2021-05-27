@@ -1,27 +1,31 @@
 import socket
 from _thread import *
+from utils import *
+from ball import Ball
 from player import Player
-import pickle
 
 def thread(con,player):
-    con.send(pickle.dumps(players[player]))
+    con.send(str.encode(create_single_object_info(players[player])))
     rep = ""
 
     while True:
         try:
-            data = pickle.loads(con.recv(2048))
-            players[player] = data
+            x, y, height, width, color, orientations = read_single_object_info(con.recv(2048).decode())
+            players[player].x, players[player].y = x,y
 
-            if not data:
+            if not (x,y):
                 print("Cliente desconectado")
                 break
             else:
-                rep = [x for x in players if x != players[player]]
 
-                print("Recebido:",rep)
+                objects = [x for x in players if x != players[player]]
+
+                rep = create_objects_info(objects)
+
+                print("Recebido:",(x, y, height, width, color, orientations))
                 print("Enviando:", rep)
 
-            con.sendall(pickle.dumps(rep))
+            con.sendall(str.encode(rep))
 
         except:
             break
@@ -36,10 +40,14 @@ CYAN = 139, 233, 253
 YELLOW = 241, 250, 140
 RED = 255, 85, 85
 
+
 size = 300
 
-players = [Player(size/2 - 50, 0, 100, 10, PINK, 'h'), Player(size/2 - 50, size-10, 100, 10, CYAN, 'h'),
-           Player(0, size/2 - 50, 10, 100, YELLOW, 'v'), Player(size-10, size/2 - 50, 10, 100, RED, 'v')]
+ball = Ball(90,120,GREEN,10,10)
+
+players = [Player(size/2 - 50, 10, 100, 10, PINK, 'h'), Player(size/2 - 50, size-10, 100, 10, CYAN, 'h'),
+           Player(0, size/2 - 50, 10, 100, YELLOW, 'v'), Player(size-10, size/2 - 50, 10, 100, RED, 'v'),ball]
+
 
 current_player = 0
 
@@ -56,11 +64,12 @@ try:
 except socket.error as e:
     str(e)
 
-s.listen(4)
+s.listen(5)
 
 print("Server ON! Aguardando conexões...")
 
 while True:
+
     con, end = s.accept()
     print("Conectado à:",end)
 
