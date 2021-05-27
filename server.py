@@ -10,8 +10,11 @@ def thread(con,player):
 
     while True:
         try:
-            x, y, height, width, color, orientations = read_single_object_info(con.recv(2048).decode())
+            x, y, height, width, color, type = read_single_object_info(con.recv(2048).decode())
             players[player].x, players[player].y = x,y
+
+            if players[player].type == 'b':
+                players[player].scoreA, players[player].scoreB = height, width
 
             if not (x,y):
                 print("Cliente desconectado")
@@ -22,7 +25,7 @@ def thread(con,player):
 
                 rep = create_objects_info(objects)
 
-                print("Recebido:",(x, y, height, width, color, orientations))
+                print("Recebido:",(x, y, height, width, color, type))
                 print("Enviando:", rep)
 
             con.sendall(str.encode(rep))
@@ -41,12 +44,12 @@ YELLOW = 241, 250, 140
 RED = 255, 85, 85
 
 
-size = 300
+size = 400
 
 ball = Ball(90,120,GREEN,10,10)
 
-players = [Player(size/2 - 50, 10, 100, 10, PINK, 'h'), Player(size/2 - 50, size-10, 100, 10, CYAN, 'h'),
-           Player(0, size/2 - 50, 10, 100, YELLOW, 'v'), Player(size-10, size/2 - 50, 10, 100, RED, 'v'),ball]
+players = [Player(100, ((size - 100)/3 * 2) + 50, 10, 50, PINK, 'p'), Player(600, ((size - 100)/3 * 2) + 50, 10, 50, CYAN, 'p'),
+           Player(100, (size - 100)/3, 10, 50, PINK, 'p'), Player(600, (size - 100)/3, 10, 50, CYAN, 'p'),ball]
 
 
 current_player = 0

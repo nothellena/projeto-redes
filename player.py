@@ -20,27 +20,15 @@ class Player():
     def move(self):
         keys = pygame.key.get_pressed()
 
-        if self.type == 'v':
-            if keys[pygame.K_UP]:
-                self.y -= self.vel
-            if self.y < 0:
-                self.y = 0
+        if keys[pygame.K_UP]:
+            self.y -= self.vel
+        if self.y < 0:
+            self.y = 0
 
-            if keys[pygame.K_DOWN]:
-                self.y += self.vel
-            if self.y > 200:
-                self.y = 200
-
-        if self.type == 'h':
-            if keys[pygame.K_LEFT]:
-                self.x -= self.vel
-            if self.x < 0:
-                self.x = 0
-
-            if keys[pygame.K_RIGHT]:
-                self.x += self.vel
-            if self.x > 200:
-                self.x = 200
+        if keys[pygame.K_DOWN]:
+            self.y += self.vel
+        if self.y > 500:
+            self.y = 500
 
         self.update()
 

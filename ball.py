@@ -6,14 +6,13 @@ GREEN = 80, 250, 123
 
 
 class Ball():
-    # This class represents a paddle. It derives from the "Sprite" class in Pygame.
 
     def __init__(self, x,y,color, width, height):
 
-        # Pass in the color of the car, and its x and y position, width and height.
-        # Set the background color and set it to be transparent
         self.x = x
         self.y = y
+        self.scoreA = 0
+        self.scoreB = 0
         self.type = 'b'
         self.color = color
         self.image = pygame.Surface([width, height])
@@ -33,13 +32,15 @@ class Ball():
         self.x += self.velocity[0]
         self.y += self.velocity[1]
 
-        if self.x >= 290:
+        if self.x >= 690:
             self.velocity[0] = -self.velocity[0]
+            self.scoreA+=1
             self.x += self.velocity[0]
         if self.x <= 0:
             self.velocity[0] = -self.velocity[0]
+            self.scoreB += 1
             self.x += self.velocity[0]
-        if self.y >= 290:
+        if self.y >= 490:
             self.velocity[1] = -self.velocity[1]
             self.y += self.velocity[1]
         if self.y <= 0:
@@ -51,9 +52,9 @@ class Ball():
     def update(self):
         self.rect = (self.x, self.y, 10, 10)
 
-    def check_collision(self, p_rect):
-        if self.image.get_rect().colliderect(p_rect.image.get_rect()):
-            print("bateu")
+    def check_collision(self, obj):
+        if obj.x <= self.x <= obj.x + 10 and obj.y <= self.y <= obj.y + 50:
+            self.bounce()
 
     def bounce(self):
         self.velocity[0] = -self.velocity[0]

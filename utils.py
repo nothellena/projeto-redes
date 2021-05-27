@@ -22,7 +22,7 @@ def create_objects_info(objects):
 def create_single_object_info(obj):
 
     if obj.type == 'b':
-        return str(int(obj.x)) + "-" + str(int(obj.y)) + "-" + "0" + "-" + "0" + "-" + "(80, 250, 123)" + "-"+ "None"
+        return str(int(obj.x)) + "-" + str(int(obj.y)) + "-" + str(obj.scoreA) + "-" + str(obj.scoreB) + "-" + "(80, 250, 123)" + "-"+ "None"
 
     return str(int(obj.x)) + "-" + str(int(obj.y)) + "-" + str(int(obj.height)) + "-" + str(int(obj.width)) + "-" + str(obj.color) + "-" + str(obj.type)
 
