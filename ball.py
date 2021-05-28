@@ -4,7 +4,6 @@ from random import randint
 BG = 40, 42, 54
 GREEN = 80, 250, 123
 
-
 class Ball():
 
     def __init__(self, x,y,color, width, height):
