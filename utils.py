@@ -4,7 +4,7 @@ def get_color(string):
 
     return (int(s[0]), int(s[1]), int(s[2]))
 
-#Une as strings referentes a cada objeto em uma única string
+
 def create_objects_info(objects):
     i = 0
     data = ""
@@ -18,18 +18,13 @@ def create_objects_info(objects):
 
         data += ";"
 
-# Cria string com os dados dos objetos
+
 def create_single_object_info(obj):
-    # Cada string contém 4 informações
-    # Caso o objeto seja a bola, a string irá conter sua posição (x,y) e a pontuação de cada dupla
     if obj.type == 'b':
         return str(int(obj.x)) + "-" + str(int(obj.y)) + "-" + str(obj.scoreA) + "-" + str(obj.scoreB)
 
-    # Caso seja um jogador, a string contem sua posição, sua cor e um indicador de que o objeto é um jogador("p")
     return str(int(obj.x)) + "-" + str(int(obj.y)) + "-" + str(obj.color) + "-" + "p"
 
-
-# Extrai os dados da string
 
 def read_single_object_info(data):
     info_list = data.split("-")
@@ -45,7 +40,7 @@ def read_single_object_info(data):
 
     return x, y, data1, data2
 
-# Particiona a string completa em substrings, cada uma referente a um objeto
+
 def read_objects_info(data):
     objects_info = data.split(";")
     objects = []
