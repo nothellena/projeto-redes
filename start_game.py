@@ -35,7 +35,7 @@ def main():
         attributes = [['x', 0], ['y', 1], ['color', 2]]
         j = 0
 
-        if ball.scoreB >= 10 or ball.scoreA >= 10:
+        if ball.scoreB >= 30 or ball.scoreA >= 30:
             run = False
             pygame.quit()
 

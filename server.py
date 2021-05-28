@@ -83,3 +83,5 @@ def main():
 
         start_new_thread(thread, (con, current_obj))
         current_obj += 1
+
+main()
